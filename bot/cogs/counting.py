@@ -96,7 +96,7 @@ class Counting(commands.Cog):
     
     def _extract_first_number(self, text: str) -> Optional[int]:
         """
-        Extract the first number from a text string, handling Discord formatting.
+        Extract the first number from a text string, handling Discord formatting and emotes.
         
         Args:
             text: The text to search for a number
@@ -106,11 +106,15 @@ class Counting(commands.Cog):
         """
         import re
         
-        # Remove Discord formatting characters and find the first number
+        # Remove Discord formatting characters
         # This handles: ***18***, **18**, *18*, __18__, etc.
         cleaned_text = re.sub(r'[*_~`]', '', text.strip())
         
-        # Find the first sequence of digits
+        # Remove Discord emote formats to avoid picking up emote IDs
+        # This handles: <:emotename:123456789>, <a:animatedemote:123456789>, etc.
+        cleaned_text = re.sub(r'<a?:[^:]+:\d+>', '', cleaned_text)
+        
+        # Find the first sequence of digits that's not part of an emote
         match = re.search(r'\d+', cleaned_text)
         if match:
             try:
