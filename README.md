@@ -249,7 +249,7 @@ The bot logs all activities to console. Check logs for:
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
+Always welcoming contributions! Here's how you can help:
 
 1. **Fork** the repository
 2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
@@ -267,7 +267,7 @@ Found a bug? Please [open an issue](https://github.com/jakedev796/counting-bot/i
 
 ### 💡 Feature Requests
 
-Have an idea? We'd love to hear it! [Open an issue](https://github.com/jakedev796/counting-bot/issues) with your suggestion.
+Have an idea? I'd love to hear it! [Open an issue](https://github.com/jakedev796/counting-bot/issues) with your suggestion.
 
 ## 🆘 Support
 
@@ -280,7 +280,6 @@ Need help? Here are your options:
 
 ### 🐛 Get Help
 - **GitHub Issues**: [Open an issue](https://github.com/jakedev796/counting-bot/issues) for bugs or feature requests
-- **Discord**: Join our support server (coming soon!)
 
 ---
 
