@@ -291,6 +291,19 @@ class Database:
                 'total_score': []
             }
     
+    async def get_total_count(self) -> int:
+        """Get the total count across all guilds."""
+        try:
+            async with self.connection.cursor() as cursor:
+                await cursor.execute("""
+                    SELECT SUM(total_score) FROM guild_settings
+                """)
+                result = await cursor.fetchone()
+                return result[0] if result and result[0] else 0
+        except Exception as e:
+            logger.error(f"Failed to get total count: {e}")
+            return 0
+    
     async def close(self):
         """Close the database connection."""
         if self.connection:

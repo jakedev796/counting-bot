@@ -4,6 +4,7 @@ Handles the core counting game logic and message processing.
 """
 
 import logging
+import os
 from typing import Optional
 
 import discord
@@ -45,11 +46,10 @@ class Counting(commands.Cog):
         user_id = message.author.id
         
         try:
-            # Try to parse the message as an integer
-            try:
-                number = int(message.content.strip())
-            except ValueError:
-                # Not an integer, ignore silently
+            # Try to parse the first number from the message
+            number = self._extract_first_number(message.content)
+            if number is None:
+                # No number found, ignore silently
                 return
             
             # Get current count and last counter
@@ -76,7 +76,9 @@ class Counting(commands.Cog):
             success = await self.bot.db.increment_count(guild_id, user_id)
             
             if success:
-                await message.add_reaction('✅')
+                # Use custom emote or fallback to default
+                success_emote = os.getenv('SUCCESS_EMOTE', '✅')
+                await message.add_reaction(success_emote)
                 logger.info(f"Valid count {number} by user {user_id} in guild {guild_id}")
             else:
                 # Database error
@@ -91,6 +93,27 @@ class Counting(commands.Cog):
     async def on_guild_join(self, guild: discord.Guild):
         """Handle bot joining a new guild."""
         logger.info(f"Bot joined guild: {guild.name} (ID: {guild.id})")
+    
+    def _extract_first_number(self, text: str) -> Optional[int]:
+        """
+        Extract the first number from a text string.
+        
+        Args:
+            text: The text to search for a number
+            
+        Returns:
+            The first number found, or None if no number is found
+        """
+        import re
+        
+        # Find the first sequence of digits
+        match = re.search(r'\d+', text.strip())
+        if match:
+            try:
+                return int(match.group())
+            except ValueError:
+                return None
+        return None
     
     @commands.Cog.listener()
     async def on_guild_remove(self, guild: discord.Guild):

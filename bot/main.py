@@ -5,10 +5,11 @@ Handles bot initialization, cog loading, and core functionality.
 
 import logging
 import os
+import asyncio
 from typing import Optional
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from .db.database import Database
 
@@ -31,9 +32,6 @@ class CountingBot(commands.Bot):
         
         # Initialize database
         self.db: Optional[Database] = None
-        
-        # Load cogs and commands
-        self._load_extensions()
     
     async def setup_hook(self):
         """Async setup hook called when the bot is starting up."""
@@ -44,9 +42,15 @@ class CountingBot(commands.Bot):
         self.db = Database(db_path)
         await self.db.initialize()
         
+        # Load cogs and commands
+        await self._load_extensions()
+        
+        # Start the presence update task
+        self.update_presence.start()
+        
         logger.info("Bot setup complete!")
     
-    def _load_extensions(self):
+    async def _load_extensions(self):
         """Load all bot extensions (cogs and commands)."""
         extensions = [
             'bot.cogs.counting',
@@ -56,7 +60,7 @@ class CountingBot(commands.Bot):
         
         for extension in extensions:
             try:
-                self.load_extension(extension)
+                await self.load_extension(extension)
                 logger.info(f"Loaded extension: {extension}")
             except Exception as e:
                 logger.error(f"Failed to load extension {extension}: {e}")
@@ -65,6 +69,15 @@ class CountingBot(commands.Bot):
         """Event called when the bot is ready."""
         logger.info(f"Bot is ready! Logged in as {self.user}")
         logger.info(f"Bot is in {len(self.guilds)} guilds")
+        
+        # Set initial presence
+        try:
+            total_count = await self._get_total_count()
+            custom_status = discord.CustomActivity(name=f"counted {total_count:,} times")
+            await self.change_presence(activity=custom_status)
+            logger.info(f"Set initial presence: counted {total_count:,} times")
+        except Exception as e:
+            logger.error(f"Failed to set initial presence: {e}")
         
         # Sync slash commands
         try:
@@ -88,6 +101,34 @@ class CountingBot(commands.Bot):
         # Clean up guild data from database
         if self.db:
             await self.db.remove_guild(guild.id)
+    
+    @tasks.loop(minutes=5)
+    async def update_presence(self):
+        """Update the bot's presence with total count every 5 minutes."""
+        if not self.db or not self.is_ready():
+            return
+        
+        try:
+            # Get total count across all guilds
+            total_count = await self._get_total_count()
+            
+            # Update presence
+            custom_status = discord.CustomActivity(name=f"counted {total_count:,} times")
+            await self.change_presence(activity=custom_status)
+            
+            logger.info(f"Updated presence: counted {total_count:,} times")
+            
+        except Exception as e:
+            logger.error(f"Failed to update presence: {e}")
+    
+    @update_presence.before_loop
+    async def before_update_presence(self):
+        """Wait until the bot is ready before starting the presence update task."""
+        await self.wait_until_ready()
+    
+    async def _get_total_count(self) -> int:
+        """Get the total count across all guilds."""
+        return await self.db.get_total_count()
     
     async def close(self):
         """Clean up resources when the bot is shutting down."""
