@@ -61,14 +61,16 @@ class Counting(commands.Cog):
             
             if number != expected_number:
                 # Wrong number
-                await message.add_reaction('❌')
+                error_emote = os.getenv('ERROR_EMOTE', '❌')
+                await message.add_reaction(error_emote)
                 logger.info(f"Wrong number {number} (expected {expected_number}) by user {user_id} in guild {guild_id}")
                 return
             
             # Check if the same user is counting twice in a row
             if last_counter == user_id:
                 # Same user counting twice in a row
-                await message.add_reaction('❌')
+                error_emote = os.getenv('ERROR_EMOTE', '❌')
+                await message.add_reaction(error_emote)
                 logger.info(f"User {user_id} tried to count twice in a row in guild {guild_id}")
                 return
             
@@ -82,7 +84,8 @@ class Counting(commands.Cog):
                 logger.info(f"Valid count {number} by user {user_id} in guild {guild_id}")
             else:
                 # Database error
-                await message.add_reaction('❌')
+                error_emote = os.getenv('ERROR_EMOTE', '❌')
+                await message.add_reaction(error_emote)
                 logger.error(f"Failed to increment count for guild {guild_id}")
                 
         except Exception as e:

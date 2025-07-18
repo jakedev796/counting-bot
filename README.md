@@ -177,6 +177,8 @@ python main.py
 |----------|-------------|---------|
 | `DISCORD_TOKEN` | Your Discord bot token | Required |
 | `DATABASE_PATH` | Path to SQLite database | `./counting_bot.db` |
+| `SUCCESS_EMOTE` | Custom emote for correct counts | `✅` |
+| `ERROR_EMOTE` | Custom emote for incorrect counts | `❌` |
 
 ### Database
 
