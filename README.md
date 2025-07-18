@@ -53,7 +53,7 @@
 
 **Ready to use immediately!** Invite the public bot to your server:
 
-[![Invite Bot](https://img.shields.io/badge/Invite%20Bot-Discord-blue.svg)](https://discord.com/oauth2/authorize?client_id=1395776535629266985&permissions=8&integration_type=0&scope=bot+applications.commands)
+[![Invite Bot](https://img.shields.io/badge/Invite%20Bot-Discord-blue.svg)](https://discord.com/oauth2/authorize?client_id=1395776535629266985&permissions=2147551296&integration_type=0&scope=bot)
 
 **Direct Link:** https://discord.com/oauth2/authorize?client_id=1395776535629266985&permissions=8&integration_type=0&scope=bot+applications.commands
 
