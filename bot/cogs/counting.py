@@ -96,7 +96,7 @@ class Counting(commands.Cog):
     
     def _extract_first_number(self, text: str) -> Optional[int]:
         """
-        Extract the first number from a text string.
+        Extract the first number from a text string, handling Discord formatting.
         
         Args:
             text: The text to search for a number
@@ -106,8 +106,12 @@ class Counting(commands.Cog):
         """
         import re
         
+        # Remove Discord formatting characters and find the first number
+        # This handles: ***18***, **18**, *18*, __18__, etc.
+        cleaned_text = re.sub(r'[*_~`]', '', text.strip())
+        
         # Find the first sequence of digits
-        match = re.search(r'\d+', text.strip())
+        match = re.search(r'\d+', cleaned_text)
         if match:
             try:
                 return int(match.group())
