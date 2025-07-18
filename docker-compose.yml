@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  counting-bot:
+    build: .
+    container_name: discord-counting-bot
+    restart: unless-stopped
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DATABASE_PATH=/app/data/counting_bot.db
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env 
