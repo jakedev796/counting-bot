@@ -1,32 +1,84 @@
-# Discord Counting Bot
+<div align="center">
+  <img src="countingBotIcon.png" alt="Counting Bot Icon" width="200" height="200">
+  
+  # Discord Counting Bot
+  
+  A Discord bot built with `discord.py` that enables a counting game in a specified channel. Users count upwards from 1, one number per message. The bot validates the sequence, reacts to correct/incorrect entries, and maintains per-server and global leaderboards.
+  
+  [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
+  [![Discord.py](https://img.shields.io/badge/discord.py-2.3+-blue.svg)](https://discordpy.readthedocs.io/)
+  [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+  [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+</div>
 
-A Discord bot built with `discord.py` that enables a counting game in a specified channel. Users count upwards from 1, one number per message. The bot validates the sequence, reacts to correct/incorrect entries, and maintains per-server and global leaderboards.
+---
 
-## Features
+## 📋 Table of Contents
 
-- **Counting Game**: Users count upwards from 1 in a designated channel
-- **Validation**: Bot validates correct sequence and prevents consecutive counting by same user
-- **Reactions**: ✅ for correct counts, ❌ for incorrect counts
-- **Admin Commands**: Set counting channel and reset count
-- **Leaderboards**: Per-server stats with global rankings
-- **Multi-Server Support**: Maintains separate counts for each server
-- **Local Storage**: All data stored in SQLite database
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Bot Setup](#bot-setup)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Development](#development)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Support](#support)
 
-## Requirements
+## ✨ Features
 
-- Python 3.10+
-- Discord Bot Token
-- Required permissions for the bot
+- 🎯 **Counting Game**: Users count upwards from 1 in a designated channel
+- ✅ **Smart Validation**: Bot validates correct sequence and prevents consecutive counting by same user
+- 🎨 **Custom Reactions**: Support for custom emotes or default ✅/❌ reactions
+- ⚙️ **Admin Commands**: Set counting channel and reset count with permission checks
+- 📊 **Leaderboards**: Per-server stats with global rankings
+- 🌐 **Multi-Server Support**: Maintains separate counts for each server
+- 💾 **Local Storage**: All data stored in SQLite database with async support
+- 🔄 **Flexible Input**: Accepts numbers anywhere in messages (e.g., "5 this is a test")
+- 📈 **Live Presence**: Custom status showing total count across all servers
+- 🐳 **Docker Ready**: Easy deployment with Docker and Docker Compose
 
-## Installation
+## 📋 Requirements
+
+- **Python** 3.10+
+- **Discord Bot Token** (from Discord Developer Portal)
+- **Required Bot Permissions**:
+  - Send Messages
+  - Add Reactions
+  - Use Slash Commands
+  - Read Message History
+
+## 🤖 Public Bot
+
+**Ready to use immediately!** Invite the public bot to your server:
+
+[![Invite Bot](https://img.shields.io/badge/Invite%20Bot-Discord-blue.svg)](https://discord.com/oauth2/authorize?client_id=1395776535629266985&permissions=8&integration_type=0&scope=bot+applications.commands)
+
+**Direct Link:** https://discord.com/oauth2/authorize?client_id=1395776535629266985&permissions=8&integration_type=0&scope=bot+applications.commands
+
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/jakedev796/counting-bot.git
+cd counting-bot
+
+# Set up environment
+cp .env.example .env
+# Edit .env with your Discord bot token
+
+# Run with Docker (recommended)
+docker-compose up -d
+
+# Or run locally
+pip install -r requirements.txt
+python main.py
+```
+
+## 📦 Installation
 
 ### Local Development
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/jakedev796/better-counting.git
-   cd better-counting
-   ```
 
 2. **Install dependencies**
    ```bash
@@ -138,7 +190,7 @@ The bot uses SQLite for data storage with the following tables:
 ### Project Structure
 
 ```
-better-counting/
+counting-bot/
 ├── bot/
 │   ├── __init__.py
 │   ├── main.py              # Main bot class
@@ -195,16 +247,44 @@ The bot logs all activities to console. Check logs for:
 - Error messages
 - Database operations
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+We welcome contributions! Here's how you can help:
 
-## Support
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-For issues and questions:
-1. Check the troubleshooting section
-2. Review the logs for error messages
-3. Create an issue in the repository 
+### 🐛 Bug Reports
+
+Found a bug? Please [open an issue](https://github.com/jakedev796/counting-bot/issues) with:
+- Description of the bug
+- Steps to reproduce
+- Expected vs actual behavior
+- Bot logs (if applicable)
+
+### 💡 Feature Requests
+
+Have an idea? We'd love to hear it! [Open an issue](https://github.com/jakedev796/counting-bot/issues) with your suggestion.
+
+## 🆘 Support
+
+Need help? Here are your options:
+
+### 📖 Self-Help
+1. Check the [troubleshooting section](#troubleshooting) above
+2. Review the bot logs for error messages
+3. Check the [Discord.py documentation](https://discordpy.readthedocs.io/)
+
+### 🐛 Get Help
+- **GitHub Issues**: [Open an issue](https://github.com/jakedev796/counting-bot/issues) for bugs or feature requests
+- **Discord**: Join our support server (coming soon!)
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by the Jake</p>
+  <p>If this project helped you, consider giving it a ⭐!</p>
+</div> 
