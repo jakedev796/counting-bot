@@ -5,6 +5,7 @@ Handles all SQLite database operations with async support.
 
 import logging
 import aiosqlite
+import sqlite3
 from typing import Optional, List, Tuple, Dict, Any
 
 logger = logging.getLogger(__name__)
@@ -201,23 +202,28 @@ class Database:
     async def reset_count(self, guild_id: int):
         """Reset the count for a guild and clear user stats."""
         try:
-            async with self.connection.cursor() as cursor:
+            # Use synchronous SQLite to avoid async deadlocks
+            with sqlite3.connect(self.db_path) as sync_connection:
+                cursor = sync_connection.cursor()
+                
                 # Reset guild count
-                await cursor.execute("""
+                cursor.execute("""
                     UPDATE guild_settings 
                     SET current_count = 0, updated_at = CURRENT_TIMESTAMP
                     WHERE guild_id = ?
                 """, (guild_id,))
                 
                 # Clear user stats for this guild
-                await cursor.execute("""
+                cursor.execute("""
                     DELETE FROM user_stats WHERE guild_id = ?
                 """, (guild_id,))
                 
-                await self.connection.commit()
-                logger.info(f"Reset count for guild {guild_id}")
+                sync_connection.commit()
+                return True
+                
         except Exception as e:
             logger.error(f"Failed to reset count for guild {guild_id}: {e}")
+            raise
     
     async def get_guild_stats(self, guild_id: int) -> Dict[str, Any]:
         """Get comprehensive stats for a guild."""

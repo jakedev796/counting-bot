@@ -30,7 +30,7 @@
 
 - 🎯 **Counting Game**: Users count upwards from 1 in a designated channel
 - ✅ **Smart Validation**: Bot validates correct sequence and prevents consecutive counting by same user
-- 🎨 **Custom Reactions**: Support for custom emotes or default ✅/❌ reactions
+- 🎨 **Custom Reactions**: Support for custom emotes or default ✅/❌ reactions with automatic fallback
 - ⚙️ **Admin Commands**: Set counting channel and reset count with permission checks
 - 📊 **Leaderboards**: Per-server stats with global rankings
 - 🌐 **Multi-Server Support**: Maintains separate counts for each server
@@ -38,6 +38,9 @@
 - 🔄 **Flexible Input**: Accepts numbers anywhere in messages (e.g., "5 this is a test")
 - 📈 **Live Presence**: Custom status showing total count across all servers
 - 🐳 **Docker Ready**: Easy deployment with Docker and Docker Compose
+- ⏰ **Grace Period System**: 5-second countdown when mistakes are made, allowing others to save the count
+- 🚫 **Same User Protection**: Automatically ignores consecutive messages from the same user
+- 💥 **Auto Reset**: Count resets to 0 if no one saves it during grace period
 
 ## 📋 Requirements
 
@@ -163,11 +166,26 @@ python main.py
 
 1. **Valid Messages**: Only integer messages are processed
 2. **Sequence**: Must count in correct order (1, 2, 3, ...)
-3. **User Alternation**: No user can count twice in a row
+3. **User Alternation**: No user can count twice in a row (automatically ignored)
 4. **Reactions**: 
    - ✅ for correct counts
    - ❌ for incorrect counts or rule violations
 5. **Rapid Counting**: Allowed as long as users alternate
+6. **Grace Period**: When someone makes a mistake, others have 5 seconds to save the count
+7. **Auto Reset**: If no one saves the count in time, it resets to 0
+
+### 🎯 Grace Period System
+
+The bot features an exciting **5-second grace period** when mistakes are made:
+
+- **🚨 Mistake Detection**: When someone types the wrong number, a countdown starts
+- **⏰ Live Countdown**: An embed updates every second showing remaining time
+- **💪 Team Save**: Other users can type the correct number to save the count
+- **🚫 Mistake Maker Lock**: The person who made the mistake cannot save it
+- **🎉 Success**: If saved, the count continues with a celebration message
+- **💥 Reset**: If time runs out, the count resets to 0 and everyone starts over
+
+This creates a thrilling team-based experience where quick thinking and cooperation can save the day!
 
 ## Configuration
 
@@ -177,8 +195,8 @@ python main.py
 |----------|-------------|---------|
 | `DISCORD_TOKEN` | Your Discord bot token | Required |
 | `DATABASE_PATH` | Path to SQLite database | `./counting_bot.db` |
-| `SUCCESS_EMOTE` | Custom emote for correct counts | `✅` |
-| `ERROR_EMOTE` | Custom emote for incorrect counts | `❌` |
+| `SUCCESS_EMOTE` | Custom emote for correct counts (with fallback) | `✅` |
+| `ERROR_EMOTE` | Custom emote for incorrect counts (with fallback) | `❌` |
 
 ### Database
 
